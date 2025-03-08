@@ -23,10 +23,17 @@ def upload_to_s3(file_path, s3_key):
 
 def lambda_handler(event, context):
     for record in event["Records"]:
-        message = json.loads(record["body"])
-        image_url = message["url"]
-        image_filename = image_url.split("/")[-1]
+        sns_message = json.loads(record["body"])["Message"]
 
+        message = json.loads(sns_message)
+
+        print(f"Message structure: {message}")
+
+        image_url = message.get("url")
+        if not image_url:
+            raise Exception("Image URL is missing in the message.")
+
+        image_filename = image_url.split("/")[-1]
         local_path = f"/tmp/{image_filename}"
         s3_key = image_filename
 

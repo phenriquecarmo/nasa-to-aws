@@ -73,12 +73,22 @@ resource "aws_iam_policy" "lambda_policy" {
       },
       {
         Effect = "Allow"
-        Action = "logs:CreateLogGroup"
-        Resource = "*"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
       }
     ]
   })
 }
+
+resource "aws_cloudwatch_log_group" "image_processor_logs" {
+  name              = "/aws/lambda/${aws_lambda_function.image_processor_lambda.function_name}"
+  retention_in_days = 7
+}
+
 
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
