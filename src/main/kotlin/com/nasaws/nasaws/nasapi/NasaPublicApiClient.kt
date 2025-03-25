@@ -1,11 +1,9 @@
 package com.nasaws.nasaws.nasapi
 
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.exchange
 
 @Service
 class NasaPublicApiClient(
@@ -16,9 +14,14 @@ class NasaPublicApiClient(
     private val restTemplate: RestTemplate
 ) {
     fun getImageOfTheDay(
-        methodType: HttpMethod
+        methodType: HttpMethod,
+        date: String? = null
     ): Map<String, Any>? {
-        val url = "$baseUrl/planetary/apod?api_key=$nasaApiKey"
+        val url = if (date != null) {
+            "$baseUrl/planetary/apod?api_key=$nasaApiKey&date=$date"
+        } else {
+            "$baseUrl/planetary/apod?api_key=$nasaApiKey"
+        }
 
         val responseEntity = restTemplate.exchange(
             url,
@@ -31,5 +34,4 @@ class NasaPublicApiClient(
             it as Map<String, Any>?
         } ?: emptyMap()
     }
-
 }

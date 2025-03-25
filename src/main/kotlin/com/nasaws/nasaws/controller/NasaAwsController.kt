@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -21,8 +22,10 @@ class NasaAwsController(
     }
 
     @GetMapping("/nasa/iotd")
-    fun getNasaImageOfTheDay(): Map<String, Any>? {
-        val response = nasaAwsService.getNasaIOD()
+    fun getNasaImageOfTheDay(
+        @RequestParam(required = false) date: String?
+    ): Map<String, Any>? {
+        val response = nasaAwsService.getNasaIOD(date)
 
         return response
     }

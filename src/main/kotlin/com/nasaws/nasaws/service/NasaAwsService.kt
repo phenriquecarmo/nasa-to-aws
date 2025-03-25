@@ -15,8 +15,8 @@ class NasaAwsService(
 ) {
 
 
-    fun getNasaIOD(): Map<String, Any>? {
-        val response = nasaPublicApiClient.getImageOfTheDay(HttpMethod.GET)
+    fun getNasaIOD(date: String? = null): Map<String, Any>? {
+        val response = nasaPublicApiClient.getImageOfTheDay(HttpMethod.GET, date)
 
         return response
     }
