@@ -8,7 +8,7 @@ variable "aws_secret_key" {
   type        = string
 }
 
-variable "region" {
+variable "aws_region" {
   description = "AWS region"
   type        = string
   default     = "sa-east-1"
