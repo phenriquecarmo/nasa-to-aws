@@ -23,7 +23,7 @@ variable "common_tags" {
   }
 }
 
-variable "ssh_public_key" {
+variable "ec2_ssh_key" {
   description = "The public SSH key for EC2 access"
   type        = string
 }
