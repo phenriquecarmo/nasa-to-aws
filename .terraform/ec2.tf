@@ -51,7 +51,7 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
 
 resource "aws_key_pair" "deployer" {
   key_name   = "nasaws-instance-key"
-  public_key = file("/Users/paulocarmo/.ssh/id_rsa.pub")
+  public_key = var.ssh_public_key
 }
 
 resource "aws_security_group" "allow_http_ssh" {

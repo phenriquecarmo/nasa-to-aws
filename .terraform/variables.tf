@@ -22,3 +22,8 @@ variable "common_tags" {
     Environment = "Dev"
   }
 }
+
+variable "ssh_public_key" {
+  description = "The public SSH key for EC2 access"
+  type        = string
+}
