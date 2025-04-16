@@ -32,7 +32,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: sa-east-1
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Build project
         run: ./gradlew clean build
@@ -41,13 +41,13 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > key.pem
           chmod 600 key.pem
-          scp -o StrictHostKeyChecking=no -i key.pem build/libs/nasaws-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_PUBLIC_DNS }}:/home/ec2-user/app.jar
+          scp -o StrictHostKeyChecking=no -i key.pem build/libs/nasaws-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:/home/ec2-user/app.jar
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Run app on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.EC2_PUBLIC_DNS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.HOST_DNS }} << 'EOF'
             export NASA_API_KEY=$(aws secretsmanager get-secret-value --secret-id nasa_api_key --query SecretString --output text | jq -r '.NASA_API_KEY')
             pkill -f 'java -jar' || true
             nohup java -jar app.jar > app.log 2>&1 &
