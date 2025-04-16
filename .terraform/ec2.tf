@@ -80,6 +80,14 @@ resource "aws_security_group" "allow_http_ssh" {
   }
 }
 
+resource "aws_eip" "nasa_eip" {
+}
+
+resource "aws_eip_association" "nasa_eip_assoc" {
+  instance_id   = aws_instance.ec2_instance.id
+  allocation_id = aws_eip.nasa_eip.id
+}
+
 resource "aws_instance" "ec2_instance" {
   ami                    = "ami-092cd6a84ad570057"
   instance_type          = "t3.micro"
@@ -97,5 +105,5 @@ resource "aws_instance" "ec2_instance" {
 }
 
 output "public_ip" {
-  value = aws_instance.ec2_instance.public_ip
+  value = aws_eip.nasa_eip.public_ip
 }
