@@ -56,7 +56,7 @@ resource "aws_key_pair" "deployer" {
 
 resource "aws_security_group" "allow_http_ssh" {
   name        = "allow_http_ssh"
-  description = "Allow SSH and HTTP"
+  description = "Allow SSH, HTTP, and custom port 9092"
 
   ingress {
     from_port   = 22
@@ -80,6 +80,14 @@ resource "aws_security_group" "allow_http_ssh" {
   }
 }
 
+resource "aws_eip" "nasa_eip" {
+}
+
+resource "aws_eip_association" "nasa_eip_assoc" {
+  instance_id   = aws_instance.ec2_instance.id
+  allocation_id = aws_eip.nasa_eip.id
+}
+
 resource "aws_instance" "ec2_instance" {
   ami                    = "ami-092cd6a84ad570057"
   instance_type          = "t3.micro"
@@ -94,41 +102,8 @@ resource "aws_instance" "ec2_instance" {
   tags = {
     Name = "NasaCloudProject"
   }
-
-  user_data = <<-EOF
-  rpm --import https://yum.corretto.aws/corretto.key
-  curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
-  yum install -y java-21-amazon-corretto-devel
-
-  yum install -y aws-cli jq
-
-  NASA_API_KEY=$(aws secretsmanager get-secret-value --secret-id nasa_api_key --query SecretString --output text | jq -r '.NASA_API_KEY')
-
-  echo "export NASA_API_URL=https://api.nasa.gov" >> /etc/profile.d/nasa_api.sh
-  echo "export NASA_API_KEY=$NASA_API_KEY" >> /etc/profile.d/nasa_api.sh
-  chmod +x /etc/profile.d/nasa_api.sh
-  source /etc/profile.d/nasa_api.sh
-EOF
-
-  provisioner "file" {
-    source      = "../build/libs/nasaws-0.0.1-SNAPSHOT.jar"
-    destination = "/home/ec2-user/application.jar"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "nohup java -jar /home/ec2-user/application.jar > /home/ec2-user/app.log 2>&1 &"
-    ]
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file("/Users/paulocarmo/.ssh/id_rsa")
-    host        = self.public_ip
-  }
 }
 
 output "public_ip" {
-  value = aws_instance.ec2_instance.public_ip
+  value = aws_eip.nasa_eip.public_ip
 }
