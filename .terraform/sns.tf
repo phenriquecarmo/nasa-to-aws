@@ -42,4 +42,6 @@ resource "aws_sns_topic_policy" "nasa_sns_policy" {
       }
     ]
   })
+
+  depends_on = [aws_s3_bucket.nasa_bucket, aws_sns_topic.nasa_email_topic]
 }
