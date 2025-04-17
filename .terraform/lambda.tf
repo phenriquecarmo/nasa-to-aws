@@ -129,6 +129,12 @@ resource "aws_lambda_permission" "allow_sns_to_invoke_lambda" {
   source_arn    = aws_sns_topic.nasa_email_topic.arn
 }
 
+resource "aws_sns_topic_subscription" "email_lambda_subscription" {
+  topic_arn = aws_sns_topic.nasa_email_topic.arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.nasa_email_lambda.arn
+}
+
 resource "aws_iam_role" "lambda_exec" {
   name = "lambda-exec-role"
 

@@ -42,7 +42,7 @@ out/
 
 ### Terraform ###
 /.terraform/bin
-/.terraform/variables/*
+/.terraform/terraform.tfvars
 /.terraform/providers/*
 /.terraform/.terraform.lock.hcl
 /.terraform/terraform.tfstate.backup

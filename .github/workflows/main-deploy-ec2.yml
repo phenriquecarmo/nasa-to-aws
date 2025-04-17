@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
-          distribution: 'temurin'
+          distribution: 'corretto'
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -37,18 +37,17 @@ jobs:
           TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           TF_VAR_aws_default_region: ${{ secrets.AWS_REGION }}
           TF_VAR_ec2_ssh_key: ${{ secrets.EC2_SSH_KEY }}
-          TF_LOG: DEBUG
 
       - name: Build project
         run: ./gradlew clean build
 
       - name: Copy jar to EC2
         run: |
-          echo "$EC2_SSH_KEY" > key.pem
+          echo "$EC2_SSH_PRIVATE_KEY" > key.pem
           chmod 600 key.pem
           scp -o StrictHostKeyChecking=no -i key.pem build/libs/nasaws-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.HOST_DNS }}:/home/ec2-user/app.jar
         env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
       - name: Run app on EC2
         run: |
@@ -58,4 +57,4 @@ jobs:
             nohup java -jar app.jar > app.log 2>&1 &
           EOF
         env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
