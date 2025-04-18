@@ -41,12 +41,19 @@ out/
 .kotlin
 
 ### Terraform ###
-/.terraform/bin
-/.terraform/terraform.tfvars
-/.terraform/providers/*
-/.terraform/.terraform.lock.hcl
-/.terraform/terraform.tfstate.backup
-/.terraform/terraform.tfstate
-/.terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/4.67.0/darwin_arm64/terraform-provider-aws_v4.67.0_x5
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/providers/
+terraform/bin/
+terraform/terraform.tfvars
+terraform/.terraform.lock.hcl
+/terraform/.terraform/providers/registry.terraform.io/hashicorp/aws/4.67.0/darwin_arm64/terraform-provider-aws_v4.67.0_x5
+/terraform/.terraform/providers/
+/terraform/.terraform/terraform.tfstate
+/terraform/.terraform.lock.hcl
+/terraform/.terraform/
 
 /.gitattributes
+
+terraform/*
