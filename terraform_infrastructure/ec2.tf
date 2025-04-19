@@ -50,7 +50,7 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "nasaws-instance-key"
+  key_name   = "nasaws-instance-key-2"
   public_key = var.ec2_ssh_key
 }
 
