@@ -18,7 +18,7 @@ class NasaAwsController(
 
     @GetMapping
     fun checkServiceIsWorking(): String {
-        return "Testing Controller from nasaws API"
+        return "Testing Controller from API"
     }
 
     @GetMapping("/nasa/iotd")
