@@ -21,9 +21,9 @@ class NasaAwsService(
         return response
     }
 
-    fun postNasaImageOfDayMessageToSnsTopic() {
+    fun postNasaImageOfDayMessageToSnsTopic(date: String? = null) {
         val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
-        val response = getNasaIOD()
+        val response = getNasaIOD(date)
 
         val messageJson = objectMapper.writeValueAsString(response)
 

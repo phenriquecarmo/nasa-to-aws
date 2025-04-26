@@ -31,9 +31,11 @@ class NasaAwsController(
     }
 
     @PostMapping("/nasa/iotd/send-message")
-    fun getNasaImageOfTheDayAndPostToSnsTopic(): ResponseEntity<Void> {
-        val response = nasaAwsService.postNasaImageOfDayMessageToSnsTopic()
-        // Return later a request ID saved on S3
+    fun getNasaImageOfTheDayAndPostToSnsTopic(
+        @RequestParam(required = false) date: String?
+    ): ResponseEntity<Void> {
+        nasaAwsService.postNasaImageOfDayMessageToSnsTopic(date)
+
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
@@ -43,5 +45,8 @@ class NasaAwsController(
 
         // return response
     }
+
+    // @GetMapping("SES") Route to get all SES subscribes
+    //
 
 }
