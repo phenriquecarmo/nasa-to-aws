@@ -29,7 +29,7 @@ resource "aws_db_instance" "postgres" {
   allocated_storage       = 10
   storage_type            = "gp2"
   engine                  = "postgres"
-  engine_version = "15.5-R2"
+  engine_version       = "15.8"
   instance_class          = "db.t3.micro"
   db_name                 = "nasaws_db"
   username                = var.db_username
