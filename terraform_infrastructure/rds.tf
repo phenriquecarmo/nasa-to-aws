@@ -6,7 +6,7 @@ resource "aws_security_group" "postgres_sg" {
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
-    security_groups = [aws_security_group.allow_http_ssh]
+    security_groups = [aws_security_group.allow_http_ssh.id]
   }
 
   ingress {
