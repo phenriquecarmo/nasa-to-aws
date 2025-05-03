@@ -53,5 +53,6 @@ terraform_infrastructure/*
 !terraform_infrastructure/sqs.tf
 !terraform_infrastructure/variables.tf
 !terraform_infrastructure/versions.tf
+!terraform_infrastructure/rds.tf
 
 /.gitattributes

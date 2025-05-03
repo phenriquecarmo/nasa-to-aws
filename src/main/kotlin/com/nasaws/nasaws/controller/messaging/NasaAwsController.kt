@@ -1,6 +1,6 @@
-package com.nasaws.nasaws.controller
+package com.nasaws.nasaws.controller.messaging
 
-import com.nasaws.nasaws.service.NasaAwsService
+import com.nasaws.nasaws.service.messaging.NasaAwsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

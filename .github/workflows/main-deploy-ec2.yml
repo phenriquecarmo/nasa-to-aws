@@ -38,6 +38,9 @@ jobs:
         env:
           TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
           TF_VAR_ec2_ssh_key: ${{ secrets.EC2_SSH_KEY }}
+          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_user_ip: ${{ secrets.USER_IP }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
@@ -45,6 +48,9 @@ jobs:
         env:
           TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
           TF_VAR_ec2_ssh_key: ${{ secrets.EC2_SSH_KEY }}
+          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_user_ip: ${{ secrets.USER_IP }}
 
       - name: Build project
         run: ./gradlew clean build

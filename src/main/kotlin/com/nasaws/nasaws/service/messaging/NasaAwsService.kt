@@ -1,4 +1,4 @@
-package com.nasaws.nasaws.service
+package com.nasaws.nasaws.service.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
