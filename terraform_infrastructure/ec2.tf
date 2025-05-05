@@ -102,6 +102,28 @@ resource "aws_instance" "ec2_instance" {
   tags = {
     Name = "NasaCloudProject"
   }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              yum update -y
+              yum install -y aws-cli jq
+
+              SECRET=$(aws secretsmanager get-secret-value --region sa-east-1 --secret-id pgsql_access_nasaws_db --query SecretString --output text)
+
+              DB_USERNAME=$(echo $$SECRET | jq -r .username)
+              DB_PASSWORD=$(echo $$SECRET | jq -r .password)
+              DB_HOST=$(echo $$SECRET | jq -r .host)
+              DB_PORT=$(echo $$SECRET | jq -r .port)
+              DB_NAME=$(echo $$SECRET | jq -r .dbname)
+              DB_URL="jdbc:postgresql://$${DB_HOST}:$${DB_PORT}/$${DB_NAME}"
+
+              echo "DB_URL=$$DB_URL" >> /etc/environment
+              echo "DB_USERNAME=$$DB_USERNAME" >> /etc/environment
+              echo "DB_PASSWORD=$$DB_PASSWORD" >> /etc/environment
+
+              echo "Secrets loaded into environment."
+              EOF
+
 }
 
 output "public_ip" {
