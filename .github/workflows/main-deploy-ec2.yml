@@ -67,6 +67,11 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.HOST_DNS }} << 'EOF'
             export NASA_API_KEY=$(aws secretsmanager get-secret-value --secret-id nasa_api_key --query SecretString --output text | jq -r '.NASA_API_KEY')
+            export DB_USERNAME=$(aws secretsmanager get-secret-value --secret-id pgsql_access_nasaws_db --query SecretString --output text | jq -r '.username')
+            export DB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id pgsql_access_nasaws_db --query SecretString --output text | jq -r '.password')
+            export DB_HOST=$(aws secretsmanager get-secret-value --secret-id pgsql_access_nasaws_db --query SecretString --output text | jq -r '.host')
+            export DB_PORT=$(aws secretsmanager get-secret-value --secret-id pgsql_access_nasaws_db --query SecretString --output text | jq -r '.port')
+            export DB_NAME=$(aws secretsmanager get-secret-value --secret-id pgsql_access_nasaws_db --query SecretString --output text | jq -r '.dbname')
             pkill -f 'java -jar' || true
             nohup java -jar app.jar > app.log 2>&1 &
           EOF
