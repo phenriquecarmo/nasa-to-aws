@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfig
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.runApplication
 
-@SpringBootApplication(
-	exclude = [DataSourceAutoConfiguration::class, JpaRepositoriesAutoConfiguration::class]
-)
+@SpringBootApplication
 class Application
 
 fun main(args: Array<String>) {
