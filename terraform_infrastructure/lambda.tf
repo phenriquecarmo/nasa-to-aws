@@ -119,6 +119,13 @@ resource "aws_lambda_function" "nasa_email_lambda" {
     }
   }
 
+  layers = [aws_lambda_layer_version.pgsql_layer.arn]
+}
+
+resource "aws_lambda_layer_version" "pgsql_layer" {
+  layer_name          = "pgsql"
+  compatible_runtimes = ["python3.9"]
+  filename            = "../pgsql_layer.zip"
 }
 
 resource "aws_lambda_permission" "allow_sns_to_invoke_lambda" {
