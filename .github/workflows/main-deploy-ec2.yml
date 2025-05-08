@@ -65,7 +65,7 @@ jobs:
 
       - name: Run app on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.HOST_DNS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.HOST_DNS }} << EOF
             export NASA_API_KEY=\$(aws secretsmanager get-secret-value --secret-id nasa_api_key --query SecretString --output text | jq -r '.NASA_API_KEY')
           
             DB_SECRET=\$(aws secretsmanager get-secret-value --secret-id pgsql_access_nasaws_db --query SecretString --output text)
@@ -74,6 +74,7 @@ jobs:
             export DB_HOST=\$(echo \$DB_SECRET | jq -r '.host')
             export DB_PORT=\$(echo \$DB_SECRET | jq -r '.port')
             export DB_NAME=\$(echo \$DB_SECRET | jq -r '.dbname')
+            export DB_URL="jdbc:postgresql://\${DB_HOST}:\${DB_PORT}/\${DB_NAME}"
           
             pkill -f 'java -jar' || true
             nohup java -jar app.jar > app.log 2>&1 &
