@@ -115,7 +115,7 @@ resource "aws_lambda_function" "nasa_email_lambda" {
   environment {
     variables = {
       SES_SENDER_EMAIL    = "henryphcog@gmail.com"
-      SES_RECIPIENT_EMAIL = "henryphcog@gmail.com"
+      DB_SECRET_NAME = "pgsql_access_nasaws_db"
     }
   }
 
@@ -178,6 +178,13 @@ resource "aws_iam_policy" "lambda_exec_policy" {
           "s3:ListBucket"
         ],
         Resource = "arn:aws:s3:::*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ],
+        Resource = "arn:aws:secretsmanager:::*"
       }
     ]
   })
