@@ -189,6 +189,13 @@ resource "aws_iam_policy" "lambda_exec_policy" {
           "secretsmanager:GetSecretValue"
         ],
         Resource = "arn:aws:secretsmanager:::*"
+      },
+      {
+        "Effect": "Allow",
+        "Action":  [
+          "lambda:GetLayerVersion"
+        ],
+        "Resource": "arn:aws:lambda:sa-east-1:898466741470:layer:psycopg2-py39:1"
       }
     ]
   })
