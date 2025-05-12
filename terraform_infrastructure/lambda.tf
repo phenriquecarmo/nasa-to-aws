@@ -119,10 +119,7 @@ resource "aws_lambda_function" "nasa_email_lambda" {
     }
   }
 
-  layers = [
-    "arn:aws:lambda:sa-east-1:898466741470:layer:psycopg2-py39:1"
-  ]
-
+  layers = [aws_lambda_layer_version.pgsql_layer.arn]
 }
 
 resource "aws_lambda_permission" "allow_sns_to_invoke_lambda" {
@@ -189,13 +186,6 @@ resource "aws_iam_policy" "lambda_exec_policy" {
           "secretsmanager:GetSecretValue"
         ],
         Resource = "arn:aws:secretsmanager:::*"
-      },
-      {
-        "Effect": "Allow",
-        "Action":  [
-          "lambda:GetLayerVersion"
-        ],
-        "Resource": "arn:aws:lambda:sa-east-1:898466741470:layer:psycopg2-py39:1"
       }
     ]
   })
@@ -209,4 +199,10 @@ resource "aws_iam_role_policy_attachment" "lambda_execute_ses_attachment" {
 resource "aws_iam_role_policy_attachment" "lambda_execute_logstream_custom_attachment" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.lambda_exec_policy.arn
+}
+
+resource "aws_lambda_layer_version" "pgsql_layer" {
+  layer_name          = "pgsql"
+  compatible_runtimes = ["python3.9"]
+  filename            = "../pgsql_layer.zip"
 }
