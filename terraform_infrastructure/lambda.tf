@@ -204,5 +204,5 @@ resource "aws_iam_role_policy_attachment" "lambda_execute_logstream_custom_attac
 resource "aws_lambda_layer_version" "pgsql_layer" {
   layer_name          = "pgsql"
   compatible_runtimes = ["python3.9"]
-  filename            = "../pgsql_layer.zip"
+  filename            = "../psycopg2-layer.zip"
 }
