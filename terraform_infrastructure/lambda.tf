@@ -185,7 +185,7 @@ resource "aws_iam_policy" "lambda_exec_policy" {
         Action = [
           "secretsmanager:GetSecretValue"
         ],
-        Resource = "arn:aws:secretsmanager:::*"
+        Resource = "arn:aws:secretsmanager:sa-east-1:699475950124:secret:pgsql_access_nasaws_db*"
       }
     ]
   })
