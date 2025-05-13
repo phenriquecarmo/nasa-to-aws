@@ -105,7 +105,7 @@ resource "aws_lambda_layer_version" "requests_layer" {
 resource "aws_lambda_function" "nasa_email_lambda" {
   function_name = "send_nasa_email"
   runtime       = "python3.9"
-  handler = "nasa_email_lambda.nasa_email_lambda.lambda_handler"
+  handler = "nasa_email_lambda.lambda_handler"
   timeout       = 30
   role          = aws_iam_role.lambda_exec.arn
 
