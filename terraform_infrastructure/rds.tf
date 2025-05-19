@@ -16,6 +16,13 @@ resource "aws_security_group" "postgres_sg" {
     cidr_blocks = ["${var.user_ip}/32"]
   }
 
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] // Warning, this is not secure, I should probably move lambda to use internet with NAT Gateway but it is too expensive T-T, you should never use this aside from testing mode
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
