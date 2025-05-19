@@ -206,3 +206,15 @@ resource "aws_lambda_layer_version" "pgsql_layer" {
   compatible_runtimes = ["python3.9"]
   filename            = "../psycopg2-layer.zip"
 }
+
+# resource "aws_security_group" "lambda_sg" { // Commented because lambda is not in the same vpc as RDS, I will try to make it work later
+#   name        = "lambda-default-vpc-sg"
+#   description = "Allow Lambda to access RDS"
+#   vpc_id      = data.aws_vpc.default.id
+#
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
