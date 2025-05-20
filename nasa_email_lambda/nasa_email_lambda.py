@@ -17,7 +17,7 @@ def get_db_credentials(secret_name: str, region_name: str = "sa-east-1") -> dict
 
 def fetch_active_subscriber_emails(conn) -> list:
     with conn.cursor() as cur:
-        cur.execute("SELECT email FROM subscribers WHERE is_active = TRUE AND unsubscribed_at IS NULL;")
+        cur.execute("SELECT email FROM subscribers WHERE is_active = TRUE AND unsubscribed_at IS null AND subscription_confirmed = TRUE;")
         return [row[0] for row in cur.fetchall()]
 
 def lambda_handler(event, context):
