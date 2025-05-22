@@ -17,6 +17,10 @@ class JobEmailSender(
     @Scheduled(cron = "0 0 * * *", zone = "America/Sao_Paulo")
     fun myCronTask() {
         log.info("Running cronTask at ${LocalDateTime.now()}")
-        nasaAwsService.postNasaImageOfDayMessageToSnsTopic()
+        try {
+            nasaAwsService.postNasaImageOfDayMessageToSnsTopic()
+        } catch (e: Exception) {
+            log.error("Error occurred while posting NASA image of the day message to SNS topic", e)
+        }
     }
 }
