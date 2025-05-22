@@ -14,7 +14,7 @@ class JobEmailSender(
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    @Scheduled(cron = "0 0 * * *", zone = "America/Sao_Paulo")
+    @Scheduled(cron = "0 40 0 * * *", zone = "America/Sao_Paulo")
     fun myCronTask() {
         log.info("Running cronTask at ${LocalDateTime.now()}")
         try {
