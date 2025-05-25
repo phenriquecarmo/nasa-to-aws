@@ -38,6 +38,7 @@ dependencies {
 
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
 	// implementation("org.springframework.modulith:spring-modulith-starter-jpa")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
 	runtimeOnly("org.postgresql:postgresql")
 
