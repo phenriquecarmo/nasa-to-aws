@@ -10,21 +10,21 @@ This project is an AWS Showcase to Practice AWS Development Skills and CI/CD cre
 
 ![Architecture Diagram](./nasaws-architecture.png)
 
-### 💡 Step-By-Step
+### 💡 Step by Step
 
 1. **EC2 Instance / API**  
-   A Kotlin-based API hosted on an EC2 instance, we can make a POST Request so that it sends NASA Image of the Day (Retrieved from Nasa's API) to all the emails whose subscription are on SES Service
+   A Kotlin and Sprint based API hosted on an EC2 instance, we can make a POST Request so that it sends NASA Image of the Day (Retrieved from Nasa's API) to all the emails whose subscription are on SES service or we can just let the Scheduled Job that run every 24 hours send the message to SNS and then it follows the workflow until it gets to the User
 
 
 2. **Secrets Manager**  
-   There its managed NASA's API KEY, used to Retrieve the IOTD (Image of The Day)
+   It contains NASA's API KEY and PostgreSQL Database Credentials
 
 
-3. **SNS (Simple Notification Service)**  
-   As the POST Request Proceeds, the message containing Nasa's API Content is published to an SNS topic.
+3. **SNS (Simple Notification service)**  
+   As the POST Request Proceeds (Or as the Scheduled Job runs), the message containing Nasa's API Content is published to an SNS topic.
 
 
-4. **SQS (Simple Queue Service)**  
+4. **SQS (Simple Queue service)**  
    The message from SNS goes to an SQS queue and then is sent to the first Lambda
 
 
@@ -34,7 +34,7 @@ This project is an AWS Showcase to Practice AWS Development Skills and CI/CD cre
     - Then it uploads the image to an S3 bucket
 
 
-6. **S3 (Simple Storage Service)**  
+6. **S3 (Simple Storage service)**  
    Stores the NASA image, and sends IMAGE to SNS using upload events
 
 
@@ -50,12 +50,12 @@ This project is an AWS Showcase to Practice AWS Development Skills and CI/CD cre
     - Sends the email to a recipient specified in the environments using Amazon SES with the image attached and a nicely formatted body.
 
 
-9. **SES (Simple Email Service)**
-   - Delivers the email to the recipient (SES_RECIPIENT_EMAIL), including The picture, the custom subject and body text
+9. **SES (Simple Email service)**
+   - Delivers the email to the recipient (The registered and confirmed users on the PostgreSQL Database), including The picture, the custom subject and customized body text
 
 
 10. **CI/CD & Terraform**  
-   The entire infrastructure is managed using Terraform (*IaC*), including backend state storage in S3. GitHub and CI/CD pipeline are used to ensure consistent deployment.
+   The entire infrastructure is managed using Terraform (*IaC*), including backend state storage in S3 so that we can avoid conflicts. GitHub and CI/CD pipeline are used to ensure consistent deployment.
 ---
 
 ## 🚀 Technologies on the project
@@ -82,5 +82,66 @@ This project is an AWS Showcase to Practice AWS Development Skills and CI/CD cre
 - **https://registry.terraform.io/providers/hashicorp/aws/latest/docs**
 - **https://medium.com/@pathirage/step-in-to-ci-cd-a-hands-on-guide-to-building-ci-cd-pipeline-with-github-actions-7490d6f7d8ff**
 
-###  How to Run the project?
-To-do
+### ⚙️🛠️ How to Run the Project?
+
+#### 1. Fork the Repository
+
+Start by forking this repository to your GitHub account.
+
+---
+
+#### 2. Set GitHub Actions Secrets
+
+Go to your repository:
+
+**Settings > Secrets and variables > Actions**
+
+Add the following secrets:
+
+- `AWS_ACCESS_KEY_ID` – Your AWS access key for programmatic access
+- `AWS_SECRET_ACCESS_KEY` – The secret key associated with your AWS access key ID
+- `AWS_REGION` – AWS region to deploy to (default: `us-east-1`)
+- `DB_USERNAME` – Username for the PostgreSQL RDS instance
+- `DB_PASSWORD` – Password for the PostgreSQL RDS instance
+- `EC2_SSH_KEY` – Name of the EC2 SSH key pair
+- `EC2_SSH_PRIVATE_KEY` – Content of the `.pem` private key used for SSH
+- `HOST_DNS` – Public DNS or IP address of the EC2 instance
+- `USER_IP` – Your public IP address (used to allow SSH access)
+
+---
+
+#### 3. Set AWS Secrets Manager Values
+
+In **AWS Secrets Manager**, create the following secrets:
+
+- `pgsql_access_nasaws_db` – with this JSON format:
+
+  ```json
+  {
+    "dbname": "your-db-name",
+    "host": "your-db-host",
+    "port": "your-db-port",
+    "username": "your-db-username",
+    "password": "your-db-password"
+  }
+
+#### 4. Replace AWS Account ID
+
+Throughout the codebase, the AWS account ID is hardcoded as:
+
+`699475950124`
+
+🔁 Replace **every occurrence** of this value with your own AWS Account ID.
+
+---
+
+#### 5. (Optional) Change AWS Region
+
+The default AWS region I used was:
+
+`sa-east-1`
+
+🌎 If you'd like to use a different region:
+
+- Update the `AWS_REGION` secret in your repository settings
+- Modify any region-specific configurations in your code or Terraform scripts
