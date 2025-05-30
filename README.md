@@ -8,7 +8,7 @@ This project is an AWS Showcase to Practice AWS Development Skills and CI/CD cre
 
 ## 🧭 Actual Architecture
 
-![Architecture Diagram](./nasaws-architecture.png)
+![Architecture Diagram](./nasaws-architecture-diagram-2.jpeg)
 
 ### 💡 Step by Step
 
